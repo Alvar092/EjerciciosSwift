@@ -9,31 +9,48 @@ import Foundation
 
 
 enum Option: String, CaseIterable {
-    case piedra = "piedra"
-    case papel = "papel"
-    case tijeras = "tijeras"
-    case salir = "salir"
+    case rock = "rock"
+    case paper = "paper"
+    case scissors = "scissors"
+    case quit = "quit"
 }
 
+
 func player() -> Option {
-    let playerChoiceEnum : Option
+    var playerChoiceEnum : Option
+    let validAnswer = ["0", "1", "2", "3"]
+    var playerChoice = ""
+    repeat {
+        print("Select an option: \n 0 - Rock \n 1 - Paper,\n 2 - Scissors,\n 3 - Quit \n --------")
+        if let input = readLine() {
+            if validAnswer.contains(input){
+                playerChoice = input
+            } else {
+                print("Invalid choice, please choose a number option.")
+            }
+        }
+        }while playerChoice == ""
     
-    print("Elige una opción: \n 1· Piedra,\n 2· Papel, \n 3· Tijera ,4· Salir del juego ")
-    
-    guard let playerChoice = readLine()?.lowercased() else {
-        print("Entrada no válida, elige Piedra, Papel o Tijera.")
-        return Option.salir
-    }
-    switch playerChoice {
-    case "piedra":
-        playerChoiceEnum = Option.piedra
-    case "papel":
-        playerChoiceEnum = Option.papel
-    case "tijeras":
-        playerChoiceEnum = Option.tijeras
-    default:
-        playerChoiceEnum = Option.salir
-    }
+        switch playerChoice {
+        case "0":
+            playerChoiceEnum = .rock
+            break
+            
+        case "1":
+            playerChoiceEnum = .paper
+            break
+            
+        case "2":
+            playerChoiceEnum = .scissors
+            break
+            
+        case "3":
+            playerChoiceEnum = .quit
+            break
+            
+        default :
+            playerChoiceEnum = .quit
+        }
     return playerChoiceEnum
 }
 
@@ -42,29 +59,36 @@ func pc() -> Option {
    return pcChoice
 }
 
-
-
-
 func gameLoop(playerChoice: Option, pcChoice: Option) -> String {
     
     var result = ""
-    var victories = [(Option.piedra, Option.tijeras), (Option.tijeras, Option.papel), (Option.papel, Option.piedra)]
-    var game = (playerChoice, pcChoice)
-        
+    let victories = [(Option.rock, Option.scissors), (Option.scissors, Option.paper), (Option.paper, Option.rock)]
+    let game = (playerChoice, pcChoice)
+    
     if playerChoice == pcChoice {
-        result = "Es un empate, juega de nuevo"
+        result = "It's a draw, play again"
     } else if game == victories[0] || game == victories[1] || game == victories[2] {
-        result = "Victoria para el humano"
+        result = "Human: \(playerChoice) vs machine: \(pcChoice): \n------\n Human wins! \n ------"
     } else {
-        result = "Victoria para la máquina"
+        result = "Human: \(playerChoice) vs machine: \(pcChoice): \n------\n Machine wins! \n------"
     }
     return result
 }
 
-
-
 func main() {
+    var continuar = true
     
+    while continuar {
+        let playerChoice = player()
+        if playerChoice == Option.quit {
+            continuar = false
+            print("Thanks for playing!")
+        } else {
+            let pcChoice = pc()
+            let result = gameLoop(playerChoice: playerChoice, pcChoice: pcChoice)
+            print(result)
+        }
+    }
 }
 
 main()
