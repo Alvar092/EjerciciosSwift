@@ -7,6 +7,31 @@
 
 import Foundation
 
+func main() {
+    var continuar = true
+    
+    var player = Player()
+    var machine = Machine()
+    while continuar {
+        let playerChoice = player.readPlayer()
+        let computer = machine.pc()
+        if playerChoice == .quit {
+            print("Thanks for playing!")
+            continuar = false
+        } else {
+            let result = machine.gameLoop(playerOption: playerChoice, pcChoice: computer)
+        print(result)
+        }
+    }
+}
+
+
+
+
+
+main()
+
+
 
 //enum Option: String, CaseIterable {
 //    case rock = "rock"
