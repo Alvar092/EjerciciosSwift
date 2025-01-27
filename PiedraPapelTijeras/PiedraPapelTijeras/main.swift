@@ -8,11 +8,11 @@
 import Foundation
 
 func main() {
-    var continuar = true
+    var continuar = true // FIXME: Nombres en inglés
     
     var player = Player()
     var machine = Machine()
-    while continuar {
+    while continuar { // FIXME: Buena gestión del bucle principal del juego
         let playerChoice = player.readPlayer()
         let computer = machine.pc()
         if playerChoice == .quit {
@@ -40,13 +40,13 @@ main()
 //    case quit = "quit"
 //}
 
-
+// FIXME: las funciones son acciones, no puedes llamarla player, puedes llamarla play()
 //func player() -> Option {
 //    var playerChoiceEnum : Option
-//    let validAnswer = ["0", "1", "2", "3"]
+//    let validAnswer = ["0", "1", "2", "3"] // FIXME: No está mal pero siempre mejor enums
 //    var playerChoice = ""
-//    repeat {
-//        print("Select an option: \n 0 - Rock \n 1 - Paper,\n 2 - Scissors,\n 3 - Quit \n --------")
+//    repeat { // FIXME: Buen uso del repeat ya que quieres que se imprima al menos una vez esto
+//        print("Select an option: \n 0 - Rock \n 1 - Paper,\n 2 - Scissors,\n 3 - Quit \n --------") // FIXME: Es más legible la opción que voy a enseñar hoy en clase con """ mensaje de varias líneas """
 //        if let input = readLine() {
 //            if validAnswer.contains(input){
 //                playerChoice = input
@@ -56,7 +56,7 @@ main()
 //            }
 //        } while playerChoice == ""
 //    
-//        switch playerChoice {
+//        switch playerChoice { // FIXME: para hacer esto te puede ayudar explorar los init de los enums
 //        case "0":
 //            playerChoiceEnum = .rock
 //            break
@@ -79,15 +79,16 @@ main()
 //    return playerChoiceEnum
 //}
 
-//func pc() -> Option {
+//func pc() -> Option { // FIXME: los nombres de las funciones deben ser descriptivos, esto es un sustantivo y además no se sabe lo que hace por el nombre
 //    let pcChoice = Option.allCases.randomElement()!
 //   return pcChoice
 //}
 
+// FIXME: Esta función qué hace, qué devuelve? Pon un nombre que lo explique como getGameResult o algo así
 //func gameLoop(playerChoice: Option, pcChoice: Option) -> String {
 //    
 //    var result = ""
-//    let victories = [(Option.rock, Option.scissors), (Option.scissors, Option.paper), (Option.paper, Option.rock)]
+//    let victories = [(Option.rock, Option.scissors), (Option.scissors, Option.paper), (Option.paper, Option.rock)] // FIXME: Buena gestión, esto es más legible que ponerlo todo en el if
 //    let game = (playerChoice, pcChoice)
 //    
 //    if playerChoice == pcChoice {
@@ -97,7 +98,7 @@ main()
 //    } else {
 //        result = "Human: \(playerChoice) vs machine: \(pcChoice): \n------\n Machine wins! \n------"
 //    }
-//    return result
+//    return result // FIXME: Bien hecho, la función retorna el resultado pero no lo imprime -> buena separación de responsabilidades
 //}
 
 //func main() {
@@ -116,26 +117,26 @@ main()
 //    }
 //}
 
-func main() {
-    var continuar = true
-    
-    var player = Player()
-    var machine = Machine()
-    while continuar {
-        let playerChoice = player.readPlayer()
-        let computer = machine.pc()
-        if playerChoice == .quit {
-            print("Thanks for playing!")
-            continuar = false
-        } else {
-            let result = machine.gameLoop(playerOption: playerChoice, pcChoice: computer)
-        print(result)
-        }
-    }
-}
-
-
-
-
-
-main()
+//func main() {
+//    var continuar = true
+//    
+//    var player = Player()
+//    var machine = Machine()
+//    while continuar {
+//        let playerChoice = player.readPlayer()
+//        let computer = machine.pc()
+//        if playerChoice == .quit {
+//            print("Thanks for playing!")
+//            continuar = false
+//        } else {
+//            let result = machine.gameLoop(playerOption: playerChoice, pcChoice: computer)
+//        print(result)
+//        }
+//    }
+//}
+//
+//
+//
+//
+//
+//main()
