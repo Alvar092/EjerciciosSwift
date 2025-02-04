@@ -6,76 +6,76 @@
 //
 
 import Foundation
-
+import OSLog
 
 enum PlayingMode {
-    case StartToFinish
-    case Shuffle
-    case EndToStart
+    case startToFinish
+    case shuffle
+    case endToStart
+    case antiquity
+    case tonality
+    case popularity(order: PopularityOrder)
+    case bPM
 }
 
-
-enum PlayingCriteria{
-    case Antiquity
-    case Tonality
-    case Popularity
-    case BPM
+enum PopularityOrder {
+    case ascending
+    case descending
 }
+
 
 struct Player{
     
-    private var currentPlaylist: Playlist
-    private var currentSong : Song
-    private var timer: Timer
+    var currentPlaylist: Playlist
     
-   
-    mutating func play(currentPlaylist: Playlist, mode: PlayingMode) {
-        
-        switch mode {
-        case .StartToFinish:
-            showNowPlaying(playlist: currentPlaylist)
-        case .Shuffle:
-            self.currentPlaylist.shufflePlaylist(_songs: currentPlaylist.songs)
-            showNowPlaying(playlist: currentPlaylist)
-        case .EndToStart:
-            self.currentPlaylist.playlistInversed(playlist: currentPlaylist)
-            showNowPlaying(playlist: currentPlaylist)
-        }
+    
+    //CREAR INIT
+    init(currentPlaylist: Playlist, logger: Logger) {
+        self.currentPlaylist = currentPlaylist
+    
     }
     
-    //Reproducir una canción mostrandolo en consola
-    mutating func showNowPlaying(playlist: Playlist, seconds: Int = 5) {
+    func playSong(song: Song){
+        print("Playing \(song.basicInfo.title) - \(song.basicInfo.artist)")
         
-        guard !currentPlaylist.songs.isEmpty else {
-            print("There are no more songs available.")
-            return
-        }
+    }
+    
+    mutating func play(mode: PlayingMode = .startToFinish, withInterval: Int = 5, finalMessage: String = "No more songs available.") {
         
-        var currentSong = currentPlaylist.songs[0]
-        
-        //Temporizador
-        timer.invalidate()
-        
-        self.timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
-            print("Playing \(currentSong.basicInfo.title) - \(currentSong.basicInfo.artist)")
-        }
-        
-        
-        
-        func changePlayingOrder(playlist: Playlist, criteria: PlayingCriteria) {
-            switch criteria {
-            case . Antiquity:
-                self.currentPlaylist.orderByRelease()
-                
-            case . Tonality:
-                currentPlaylist.songs = self.currentPlaylist.orderByTonality(songs: self.currentPlaylist.songs)
-                
-            case .Popularity:
-                currentPlaylist.songs = self.currentPlaylist.orderByPopularity(songs: self.currentPlaylist.songs)
-                
-            case .BPM:
-                currentPlaylist.songs = self.currentPlaylist.orderByBPM(songs: self.currentPlaylist.songs)
+        let songs: [Song] = {
+            
+            switch mode {
+            case .startToFinish:
+                return currentPlaylist.songs
+            case .shuffle:
+                var newPlaylist = currentPlaylist.shufflePlaylist(_songs: currentPlaylist.songs)
+                return newPlaylist
+            case .endToStart:
+                var newPlaylist = currentPlaylist.playlistInversed(songs: currentPlaylist.songs)
+                return newPlaylist
+            case .antiquity:
+                var newPlaylist = currentPlaylist.orderByRelease()
+                return newPlaylist
+            case .tonality:
+                var newPlaylist = currentPlaylist.orderByTonality(songs: currentPlaylist.songs)
+                return newPlaylist
+            case .popularity(order: let order):
+                var newPlaylist = currentPlaylist.orderByPopularity(songs: currentPlaylist.songs, order: order)
+                return newPlaylist
+            case .bPM:
+                var newPlaylist = currentPlaylist.orderByBPM(songs: currentPlaylist.songs)
+                return newPlaylist
             }
-        }
+        }()
+        playSong(song: songs[0])
+        sleep(UInt32(withInterval))
+        
+        
+//        songs.forEach { song in
+//            playSong(song: song)
+//            logger.debug("\(song.basicInfo.title)")
+//            sleep(UInt32(withInterval))
+//        }
+        //logger.info("\(finalMessage)")
     }
 }

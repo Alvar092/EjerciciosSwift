@@ -14,25 +14,37 @@ let logger = Logger(subsystem: "Sprint1", category: "main")
 func main() {
     
     let songs = SongsLoader().songs
-
-    songs.forEach { song in
-        print(song.basicInfo.title)
+    
+    let playlist = Playlist(name: "My Music", songs: songs)
+    
+    var player = Player(currentPlaylist: playlist, logger: logger )
+    
+    player.play(mode: .popularity(order: .ascending))
+    
     }
     
-    let averagePopularity = getAveragePopularity(inSongs: songs)
-    print(averagePopularity)
+//    songs.forEach { song in
+//        print(song.basicInfo.title)
+//    }
     
-    let songsOfEdSheeran = getSongsFromArtist("Ed Sheeran", inSongs: songs)
-    print(songsOfEdSheeran)
     
-    let songsByRock = getSongsByGenre("Pop", inSongs: songs)
-    print(songsByRock)
     
-    let totalDurationCatalog = getTotalDuration(songs: songs)
-    print(totalDurationCatalog)
-}
+    
+//    let averagePopularity = getAveragePopularity(inSongs: songs)
+//    print(averagePopularity)
+//    
+//    let songsOfEdSheeran = getSongsFromArtist("Ed Sheeran", inSongs: songs)
+//    print(songsOfEdSheeran)
+//    
+//    let songsByRock = getSongsByGenre("Pop", inSongs: songs)
+//    print(songsByRock)
+//    
+//    let totalDurationCatalog = getTotalDuration(songs: songs)
+//    print(totalDurationCatalog)
+
 
 main()
+//RunLoop.main.run()
 
 
 
