@@ -29,18 +29,25 @@ struct dj {
     
     
     //Crear una playlist con la posibilidad de 2 estilos
-    func createByStyle(style1: DJStyle, style2: DJStyle? = nil) -> [Song]{
+    func createByStyle(style1: DJStyle, style2: DJStyle? = nil, name: String? = nil) -> Playlist {
         var listByStyle: [Song] = []
+        
+        let styles = [style1, style2].compactMap{$0}
         let combinedTags = Set(style1.tag).union(style2?.tag ?? [])
         
         listByStyle = songs.filter {song in
             let songTags = Set(song.metadata.tags)
             return !songTags.isDisjoint(with: combinedTags)
         }
-        return listByStyle
+        
+        let playlistName = styles.map {$0.name}.joined(separator: "&")
+        let finalPlaylistName = playlistName.isEmpty ? "Default playlist" : playlistName
+        
+        return Playlist(name: finalPlaylistName, songs: listByStyle)
     }
     
     
+  
     
     
 }

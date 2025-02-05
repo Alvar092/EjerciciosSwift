@@ -67,8 +67,41 @@ struct Player{
                 return newPlaylist
             }
         }()
-        playSong(song: songs[0])
-        sleep(UInt32(withInterval))
+        
+        
+        let modeDescription: String
+           switch mode {
+           case .startToFinish:
+               modeDescription = "Start to Finish"
+           case .shuffle:
+               modeDescription = "Shuffle"
+           case .endToStart:
+               modeDescription = "End to Start"
+           case .antiquity:
+               modeDescription = "By Antiquity"
+           case .tonality:
+               modeDescription = "By Tonality"
+           case .popularity(order: let order):
+               modeDescription = order == .ascending ? "Popularity (Ascending)" : "Popularity (Descending)"
+           case .bPM:
+               modeDescription = "By BPM"
+           }
+           
+
+           
+           
+        var index = 0
+        
+        print("Playing mode: \(modeDescription)")
+        
+        while index < songs.count{
+            let currentSong = songs[index]
+            playSong(song: currentSong)
+            sleep(UInt32(withInterval))
+            
+            index += 1
+        }
+        print(finalMessage)
         
         
 //        songs.forEach { song in

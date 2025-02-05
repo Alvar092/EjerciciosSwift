@@ -15,21 +15,27 @@ func main() {
     
     let songs = SongsLoader().songs
     
-    let playlist = Playlist(name: "My Music", songs: songs)
+   
+    let dj1 = dj(songs: songs)
     
-    var player = Player(currentPlaylist: playlist, logger: logger )
+    let playlistStyle = dj1.createByStyle(style1: rockAnthems, style2: emotionalTrip)
     
-    player.play(mode: .popularity(order: .ascending))
-    
+    var player1 = Player(currentPlaylist: playlistStyle, logger: logger)
+    player1.play(mode: .startToFinish)
+ 
+ 
     }
+main()
     
+
+
+
+
+
+
 //    songs.forEach { song in
 //        print(song.basicInfo.title)
 //    }
-    
-    
-    
-    
 //    let averagePopularity = getAveragePopularity(inSongs: songs)
 //    print(averagePopularity)
 //    
@@ -42,13 +48,14 @@ func main() {
 //    let totalDurationCatalog = getTotalDuration(songs: songs)
 //    print(totalDurationCatalog)
 
+//let topAlbum = getAlbumWithMoreSongs(songs: songs)
+//print(topAlbum)
 
-main()
 //RunLoop.main.run()
 
 
 
-
+//Búsquedas y filtrados básicos
 
 func getSongsFromArtist(_ artist: String, inSongs songs: [Song])-> [String] {
     var songsByArtist: [String] = []
@@ -82,6 +89,9 @@ func getAveragePopularity(inSongs songs: [Song]) -> Int {
     return totalPopularity / numberOfSongs
 }
 
+
+//Calculos y estadísticas
+
 func getTotalDuration( songs: [Song]) -> Int {
     var totalDuration = 0
     for song in songs{
@@ -90,6 +100,21 @@ func getTotalDuration( songs: [Song]) -> Int {
    
     return totalDuration / 60000
 }
+
+func getAlbumWithMoreSongs( songs: [Song]) -> String {
+    var albumCount: [String: Int] = [:]
+    
+    for song in songs{
+        let album = song.basicInfo.album
+        albumCount[album, default: 0] += 1
+        }
+    
+    let albumWithMoreSongs = albumCount.max(by:{$0.value < $1.value})
+    let result = albumWithMoreSongs?.key ?? "No hay album"
+    return result
+}
+
+//Validaciones complejas
 
 func getSongsByBPM(bpm: Int, songs: [Song]) -> [String] {
     var songsByBPM: [String] = []

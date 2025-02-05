@@ -7,52 +7,62 @@
 
 import Foundation
 
+
 struct Playlist{
-    let name : String?
+    var name : String?
     var songs: [Song]
     
     static var usedNames: Set<String> = []
     
-    init?(name: String?, songs: [Song]) {
-        //Si no hay nombre, se asigna uno
-        let finalName = name ?? "Unknown name"
-        
-        //Verifico si esta en el set de nombres
-        guard Playlist.usedNames.contains(finalName) else {
-            print("Error: There's already a playlist with that name.")
-            return nil
-        }
-        
-        self.name = name
-        self.songs = songs
-        
-        Playlist.usedNames.insert(finalName)
+    init(name: String, songs: [Song]) {
+            // Si el nombre ya existe, lo ajustamos para que sea único
+            var uniqueName = name
+            var counter = 1
+            
+            // Generamos un nombre único si ya existe
+            while Playlist.usedNames.contains(uniqueName) {
+                uniqueName = "\(name)_\(counter)"
+                counter += 1
+            }
+            
+            // Asignamos el nombre único
+            self.name = uniqueName
+            self.songs = songs
+            
+            // Agregamos el nombre al set de nombres utilizados
+            Playlist.usedNames.insert(uniqueName)
     }
     
     
     
     
+    //Funcionalidades
     
     
+    //Añadir cancion
     mutating func addSong(song: Song) {
         songs.append(song)
     }
     
+    //Añadir grupo de canciones
     mutating func addPlaylist(newSongs: [Song]) {
        return songs = newSongs
     }
     
+    //Quitar cancion
     mutating func removeSong(song:Song) {
         if let indexSong = songs.firstIndex(of: song) {
             songs.remove(at: indexSong)
         }
     }
     
+    //Obtener total de canciones
     mutating func totalSongs(_ songs: [Song]) -> Int {
         return songs.count
     }
     
     
+    //Vaciar playlist
     mutating func emptyPlaylist() {
         self.songs.removeAll()
     }
@@ -64,13 +74,14 @@ struct Playlist{
         return result
     }
     
+    //Invertir la lista
     func playlistInversed(songs: [Song]) -> [Song] {
         var result = songs
         result.reverse()
         return result
     }
     
-   
+   //Ordenar por lanzamientos
     func orderByRelease() -> [Song]{
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-mm-dd"
@@ -88,6 +99,8 @@ struct Playlist{
         return result
     }
     
+    
+    //Ordenar por tonalidades
     func orderByTonality(songs: [Song]) -> [Song] {
         let tonalitiesOrder: [String] = [
             "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb",
@@ -106,6 +119,8 @@ struct Playlist{
         return result
     }
     
+    
+    //Ordenar por popularidad
     func orderByPopularity(songs: [Song], order: PopularityOrder) -> [Song] {
         
         switch order {
@@ -118,7 +133,7 @@ struct Playlist{
         }
     }
     
-    
+    //Ordenar por BPM
     func orderByBPM(songs: [Song]) -> [Song] {
         let songsByBPM = songs.sorted{$0.technicalInfo.bpm < $1.technicalInfo.bpm}
         return songsByBPM
