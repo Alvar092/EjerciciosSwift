@@ -2,7 +2,7 @@
 //  player.swift
 //  Sprint1
 //
-//  Created by Álvaro Entrena Casas on 3/2/25.
+//  Created by Álvaro Entrena Casas on 5/2/25.
 //
 
 import Foundation
@@ -27,15 +27,19 @@ enum PopularityOrder {
 struct Player{
     
     var currentPlaylist: Playlist
-    
+    // Variable para poder testar
+    var songsPlayed: [String] = []
     
     //CREAR INIT
-    init(currentPlaylist: Playlist, logger: Logger) {
+    init(currentPlaylist: Playlist, songsPlayed:[String] = [], logger: Logger) {
         self.currentPlaylist = currentPlaylist
+        self.songsPlayed = songsPlayed
+        
     
     }
     
-    func playSong(song: Song){
+    mutating func playSong(song: Song){
+        songsPlayed.append(song.basicInfo.title)
         print("Playing \(song.basicInfo.title) - \(song.basicInfo.artist)")
         
     }
@@ -102,13 +106,5 @@ struct Player{
             index += 1
         }
         print(finalMessage)
-        
-        
-//        songs.forEach { song in
-//            playSong(song: song)
-//            logger.debug("\(song.basicInfo.title)")
-//            sleep(UInt32(withInterval))
-//        }
-        //logger.info("\(finalMessage)")
     }
 }

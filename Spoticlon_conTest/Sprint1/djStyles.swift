@@ -2,11 +2,10 @@
 //  djStyles.swift
 //  Sprint1
 //
-//  Created by Álvaro Entrena Casas on 4/2/25.
+//  Created by Álvaro Entrena Casas on 5/2/25.
 //
 
 import Foundation
-
 
 struct DJStyle {
     var name: String
@@ -14,20 +13,13 @@ struct DJStyle {
     var tag: [String]
 }
     
-//    private init(name: String, description: String, tag: [String]) {
-//        self.name = name
-//        self.description = description
-//        self.tag = tag
-//    }
-    
-    
 let chillVibes = DJStyle (
     name: "Chill Vibes",
     description: "canciones relajantes y suaves para crear un ambiente tranquilo.",
-    tag: ["chill", "soulful", "acoustic", "memories", "soft rock", "nostalgic", "peace."]
+    tag: ["chill", "soulful", "acoustic", "memories", "soft rock", "nostalgia", "peace."]
 )
 
-let partyStarte = DJStyle (
+let partyStarter = DJStyle (
     name: "Party Starter",
     description: "centrado en levantar el ánimo y sacar a la gente a bailar.",
     tag: ["party", "dance", "energetic", "disco", "summer", "fun", "uplifting", "catchy."]
@@ -55,14 +47,4 @@ let EightysLovers = DJStyle (
     name: "80's lovers",
     description: "para aquellos amantes del synth, el pop retro y la nostalgia de los años 80.",
     tag: ["80s", "synthwave", "pop", "iconic", "retro"])
-
-
-
-    
-    
-    
-    
-    
-    
-    
 

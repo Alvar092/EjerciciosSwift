@@ -20,7 +20,25 @@
 
 /* Begin PBXFileReference section */
 		871524802D3984520009E1D4 /* Sprint1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sprint1; sourceTree = BUILT_PRODUCTS_DIR; };
+		872AA6FE2D3ED09C00686774 /* Sprint1Testing.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Sprint1Testing.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		872AA7092D3ED0BC00686774 /* Exceptions for "Sprint1" folder in "Sprint1Testing" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Datasource/SongModels.swift,
+				Datasource/songs.json,
+				Datasource/SongsLoader.swift,
+				dj.swift,
+				djStyles.swift,
+				main.swift,
+				player.swift,
+				playlists.swift,
+			);
+			target = 872AA6FD2D3ED09C00686774 /* Sprint1Testing */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 		871524972D398A700009E1D4 /* Exceptions for "Sprint1" folder in "Copy Files" phase from "Sprint1" target */ = {
@@ -40,14 +58,27 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				871524972D398A700009E1D4 /* Exceptions for "Sprint1" folder in "Copy Files" phase from "Sprint1" target */,
+				872AA7092D3ED0BC00686774 /* Exceptions for "Sprint1" folder in "Sprint1Testing" target */,
 			);
 			path = Sprint1;
+			sourceTree = "<group>";
+		};
+		872AA6FF2D3ED09C00686774 /* Sprint1Testing */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Sprint1Testing;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		8715247D2D3984520009E1D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		872AA6FB2D3ED09C00686774 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -61,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				871524822D3984520009E1D4 /* Sprint1 */,
+				872AA6FF2D3ED09C00686774 /* Sprint1Testing */,
 				871524812D3984520009E1D4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				871524802D3984520009E1D4 /* Sprint1 */,
+				872AA6FE2D3ED09C00686774 /* Sprint1Testing.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -98,6 +131,28 @@
 			productReference = 871524802D3984520009E1D4 /* Sprint1 */;
 			productType = "com.apple.product-type.tool";
 		};
+		872AA6FD2D3ED09C00686774 /* Sprint1Testing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 872AA7042D3ED09C00686774 /* Build configuration list for PBXNativeTarget "Sprint1Testing" */;
+			buildPhases = (
+				872AA6FA2D3ED09C00686774 /* Sources */,
+				872AA6FB2D3ED09C00686774 /* Frameworks */,
+				872AA6FC2D3ED09C00686774 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				872AA6FF2D3ED09C00686774 /* Sprint1Testing */,
+			);
+			name = Sprint1Testing;
+			packageProductDependencies = (
+			);
+			productName = Sprint1Testing;
+			productReference = 872AA6FE2D3ED09C00686774 /* Sprint1Testing.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -109,6 +164,9 @@
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					8715247F2D3984520009E1D4 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					872AA6FD2D3ED09C00686774 = {
 						CreatedOnToolsVersion = 16.2;
 					};
 				};
@@ -128,12 +186,30 @@
 			projectRoot = "";
 			targets = (
 				8715247F2D3984520009E1D4 /* Sprint1 */,
+				872AA6FD2D3ED09C00686774 /* Sprint1Testing */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		872AA6FC2D3ED09C00686774 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8715247C2D3984520009E1D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		872AA6FA2D3ED09C00686774 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -283,6 +359,36 @@
 			};
 			name = Release;
 		};
+		872AA7022D3ED09C00686774 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADCUTL8YP7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = KeepCoding.Sprint1Testing;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		872AA7032D3ED09C00686774 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADCUTL8YP7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = KeepCoding.Sprint1Testing;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -300,6 +406,15 @@
 			buildConfigurations = (
 				871524882D3984520009E1D4 /* Debug */,
 				871524892D3984520009E1D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		872AA7042D3ED09C00686774 /* Build configuration list for PBXNativeTarget "Sprint1Testing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				872AA7022D3ED09C00686774 /* Debug */,
+				872AA7032D3ED09C00686774 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

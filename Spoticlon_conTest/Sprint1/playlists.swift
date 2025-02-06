@@ -2,13 +2,12 @@
 //  playlists.swift
 //  Sprint1
 //
-//  Created by Álvaro Entrena Casas on 2/2/25.
+//  Created by Álvaro Entrena Casas on 5/2/25.
 //
 
 import Foundation
 
-
-struct Playlist{
+struct Playlist:Equatable{
     var name : String?
     var songs: [Song]
     

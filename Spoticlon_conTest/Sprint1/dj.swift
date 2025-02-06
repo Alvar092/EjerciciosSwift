@@ -2,7 +2,7 @@
 //  dj.swift
 //  Sprint1
 //
-//  Created by Álvaro Entrena Casas on 4/2/25.
+//  Created by Álvaro Entrena Casas on 5/2/25.
 //
 
 import Foundation
@@ -21,7 +21,7 @@ struct dj {
     }
     
     //Crear playlist en base a un tag
-    func accessByTag(tag: String) -> [Song] {
+    func createByTag(tag: String) -> [Song] {
         var tagList: [Song] = []
         tagList = songs.filter{$0.metadata.tags.contains(tag)}
         return tagList
