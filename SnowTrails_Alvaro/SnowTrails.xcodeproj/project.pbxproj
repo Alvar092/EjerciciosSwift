@@ -28,6 +28,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				DataSource.swift,
+				Logger.swift,
 				MenuController.swift,
 				Programm.swift,
 				Users.swift,

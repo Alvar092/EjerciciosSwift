@@ -7,6 +7,7 @@
 
 import Testing
 
+
 // Aquí podéis cambiarle el nombre y añadir más tests de otra clase, struct o archivo
 struct SnowTrailsTesting {
     
@@ -94,13 +95,6 @@ struct SnowTrailsTesting {
             #expect(isAdmin == true)
         }
         
-        @Test func showUsers() async throws {
-            let program = Program()
-            let users = program.showUsers()
-            #expect(users == ["User: : Regularuserkeepcoding1--- Email: regularuser@keepcoding.es", "Admin: : Adminuserkeepcoding1--- Email: adminuser@keepcoding.es"])
-            #expect((users.count == usersRegistration.count))
-        }
-        
         @Test func addUser() async throws {
             let program = Program()
             let actualNumber = usersRegistration.count
@@ -115,6 +109,13 @@ struct SnowTrailsTesting {
             program.deleteUser(userName: "UsuarioNuevo")
             print(usersRegistration)
             #expect(usersRegistration.count == 2)
+        }
+        
+        @Test func showUsers() async throws {
+            let program = Program()
+            let users = program.showUsers()
+            #expect(users == ["User: : Regularuserkeepcoding1--- Email: regularuser@keepcoding.es", "Admin: : Adminuserkeepcoding1--- Email: adminuser@keepcoding.es"])
+            #expect((users.count == usersRegistration.count))
         }
     }
 }

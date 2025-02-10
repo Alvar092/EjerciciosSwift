@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import OSLog
 
 enum UserType: String {
-    case normal = "User: "
-    case admin = "Admin: "
+    case normal = "User"
+    case admin = "Admin"
 }
 
 
@@ -24,6 +25,17 @@ struct User {
         self.name = name
         self.email = email
         self.password = password
+    }
+    
+    func obtainRol() {
+        switch type {
+        case .normal:
+            Logger.consoleUILogger.info("Usuario \(type.rawValue) con nombre \(name)")
+        case .admin:
+            Logger.consoleUILogger.info("Usuario\(type.rawValue) con nombre \(name)")
+        @unknown default:
+            Logger.consoleDeveloperLogger.error("No se encontro el rol de usuario.")
+        }
     }
 }
 

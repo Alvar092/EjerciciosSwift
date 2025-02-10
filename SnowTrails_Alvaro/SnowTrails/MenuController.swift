@@ -6,32 +6,38 @@
 //
 
 import Foundation
+import OSLog
 
 class MenuController {
     let program = Program()
+    
+    func readRequest(request: String) {
+        
+    }
     
     func showWelcomeMenu() {
         var exit = false
         
         while !exit {
-            print("===Bienvenido a Snowtrails=== \n 1. Acceder como usuario \n 2. Acceder como administrador \n 3. Salir ")
+            Logger.consoleUILogger.info("===Bienvenido a Snowtrails=== \n 1. Acceder como usuario \n 2. Acceder como administrador \n 3. Salir ")
             
             if let choice = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !choice.isEmpty {
                 switch choice {
                 case "1":
                     if program.logInSolicitude(for: .normal) {
-                        print("Sesión iniciada")
+                        Logger.consoleUILogger.info("Sesión iniciada")
                         showUserMenu()
                     }
                 case "2":
                     if program.logInSolicitude(for: .admin){
-                        print("Sesión iniciada")
+                        Logger.consoleUILogger.info("Sesión iniciada")
                         showAdminMenu()
                     }
                 case "3":
                     exit = true
                 default:
-                    print("Opcion no valida, intente de nuevo")
+                    Logger.consoleDeveloperLogger.error("Entrada no válida")
+                    Logger.consoleUILogger.error("Opcion no valida, intente de nuevo")
                 }
             }
         }
@@ -41,7 +47,7 @@ class MenuController {
         var exitUserMenu = false
         
         while !exitUserMenu {
-            print("Menú de usuario - Selecciona una opción: \n 1. Ver todas las rutas \n 2. Obtener la ruta mas corta entre dos punto \n 3. Log out")
+            Logger.consoleUILogger.info("Menú de usuario - Selecciona una opción: \n 1. Ver todas las rutas \n 2. Obtener la ruta mas corta entre dos punto \n 3. Log out")
             
             if let choice = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !choice.isEmpty {
                 switch choice {
@@ -50,12 +56,13 @@ class MenuController {
                     let routes = program.showPaths()
                     for route in routes {print(route)}
                 case "2":
-                    print("Proximamente!")
+                    Logger.consoleUILogger.info("Proximamente!")
                 case "3":
                     exitUserMenu = true
-                    print("Cerrando sesion...")
+                    Logger.consoleUILogger.info("Cerrando sesion...")
                 default:
-                    print("Opcion no valida, intente de nuevo")
+                    Logger.consoleDeveloperLogger.error("Entrada no válida")
+                    Logger.consoleUILogger.error("Opcion no valida, intente de nuevo")
                     
                 }
             }
@@ -65,26 +72,27 @@ class MenuController {
     func showAdminMenu() {
         var exitAdminMenu = false
         while !exitAdminMenu{
-            print("Menu de administrador - Selecciona una opción: \n 1. Ver todos los usuarios \n 2. Añadir usuario \n 3. Eliminar usuario \n 4. Añadir punto a una ruta \n 5. Log out")
+            Logger.consoleUILogger.info("Menu de administrador - Selecciona una opción: \n 1. Ver todos los usuarios \n 2. Añadir usuario \n 3. Eliminar usuario \n 4. Añadir punto a una ruta \n 5. Log out")
             
             if let choice = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !choice.isEmpty {
                 switch choice {
                 case "1":
                     let users = program.showUsers()
                     for user in users {
-                        print(user)
+                        Logger.consoleUILogger.info("\(user)")
                     }
                 case "2":
                     program.addUser()
                 case "3":
                     program.nameForDeleting()
                 case "4":
-                    print("Proximamente!...")
+                    Logger.consoleUILogger.info("Proximamente!...")
                 case "5":
                     exitAdminMenu = true
-                    print("Cerrando sesión...")
+                    Logger.consoleUILogger.info("Cerrando sesión...")
                 default:
-                    print("Opción no válida, intentlo de nuevo")
+                    Logger.consoleDeveloperLogger.error("Entrada no válida")
+                    Logger.consoleUILogger.error("Opción no válida, intentlo de nuevo")
                 }
             }
         }

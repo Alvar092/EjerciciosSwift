@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
  
 
 struct Program {
@@ -16,25 +17,41 @@ struct Program {
     
     // Validar credenciales
     func validateCredentials(email: String, password: String, for usertype: UserType) -> Bool {
-        if let registeredUser = usersRegistration.first(where: {$0.type == usertype && $0.email == email && $0.password == password }){
-            print("Acceso autorizado para \(registeredUser.name)")
-            return true
-        } else {
-            print("Credenciales incorrectar o usuario no autorizado")
-            return false
+        var isValid = false
+        
+        let emailRegex = "^[A-Za-z0-9]+@[A-Za-z0-9]+\\.(es|com)$"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        
+        guard emailPredicate.evaluate(with: email) else {
+            Logger.consoleDeveloperLogger.error("El email no cumple el formato adecuado")
+            Logger.consoleUILogger.error("Email no valido, por favor introduce un email")
+            return isValid
         }
+        
+        if let registeredUser = usersRegistration.first(where: {
+            $0.type == usertype &&
+            $0.email == email &&
+            $0.password == password &&
+            (8...24).contains($0.name.count)
+        }) {
+            Logger.consoleUILogger.info("Acceso autorizado para  \(registeredUser.name)")
+            isValid = true
+        } else {
+            Logger.consoleUILogger.info("Credenciales incorrectas o usuario no autorizado")
+        }
+        return isValid
     }
     
     // Solicitar email y contraseña y validar con validateCredentials()
     func logInSolicitude(for userType: UserType) -> Bool{
-        print("Introduzca su email: ")
+        Logger.consoleUILogger.info("Introduzca su email: ")
         guard let email = readLine(), !email.isEmpty else {
-            print("El email no puede estar vacio")
+            Logger.consoleUILogger.error("El email no puede estar vacio")
             return false
         }
-        print("Introduzca contraseña: ")
+        Logger.consoleUILogger.info("Introduzca contraseña: ")
         guard let password = readLine(), !password.isEmpty else {
-            print("La contraseña esta vacia")
+            Logger.consoleUILogger.error("La contraseña esta vacia")
             return false
         }
         return validateCredentials(email: email, password: password, for: userType)
@@ -79,11 +96,12 @@ struct Program {
         
         var totalPaths: [String] = []
         
+        Logger.consoleDeveloperLogger.info("Calculando la distancia de las rutas")
+        
         for route in dataSource.routes {
             var totalDistance = 0.0
             
             let routePoints = route.points.compactMap{ pointName in dataSource.topographicPoints.first{$0.name == pointName}}
-            
             
             for i in 0..<(routePoints.count - 1 ) {
                 let point1 = routePoints[i]
@@ -113,17 +131,15 @@ struct Program {
     // Crear usuario en el registro
     func createUser(newUser: User) {
         usersRegistration.append(newUser)
-        print("Usuario \(newUser.name) con email \(newUser.email) añadido satisfactoriamente")
+        Logger.consoleUILogger.info("Usuario \(newUser.name) con email \(newUser.email) añadido satisfactoriamente")
     }
     
     
     //Admin-añadir usuario
     func addUser() {
-        
-       
-        print("Introduce el nombre de usuario que quieres añadir")
+        Logger.consoleUILogger.info("Introduce el nombre de usuario que quieres añadir")
         guard let nombre = readLine(), !nombre.isEmpty else {
-            print("El nombre no puede estar vacio")
+            Logger.consoleUILogger.error("El nombre no puede estar vacio")
             return
         }
         
@@ -133,9 +149,9 @@ struct Program {
             return
         }
         
-        print("Introduce la contraseña del usuario que quieres añadir")
+        Logger.consoleUILogger.info("Introduce la contraseña del usuario que quieres añadir")
         guard let password = readLine(), !password.isEmpty else{
-            print("La contraseña no puede estar vacia")
+            Logger.consoleUILogger.error("La contraseña no puede estar vacia")
             return
         }
         
