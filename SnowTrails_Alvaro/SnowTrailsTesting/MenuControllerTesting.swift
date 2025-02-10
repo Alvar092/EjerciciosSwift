@@ -13,9 +13,11 @@ class MenuControllerTesting {
     class NumberOfMenusTests {
         
         var menuController: MenuController?
+        var logger: Logging
         
         init() {
-            menuController = MenuController()
+            logger = AppLogger(subsystem: "SnowTrails")
+            menuController = MenuController(logger: logger)
         }
         
         deinit {

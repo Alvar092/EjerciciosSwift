@@ -10,6 +10,12 @@ import OSLog
  
 
 struct Program {
+    private let logger: Logging
+
+    init(logger: Logging) {
+        self.logger = logger
+    }
+    
     
     // Modo de acceso al data source mediante Singleton
     private let dataSource = TopographicDataSource.shared
@@ -23,8 +29,8 @@ struct Program {
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         
         guard emailPredicate.evaluate(with: email) else {
-            Logger.consoleDeveloperLogger.error("El email no cumple el formato adecuado")
-            Logger.consoleUILogger.error("Email no valido, por favor introduce un email")
+            logger.logError("El email no cumple el formato adecuado", for: .developer)
+            logger.logError("Email no valido, por favor introduce un email", for: .user)
             return isValid
         }
         
@@ -34,24 +40,24 @@ struct Program {
             $0.password == password &&
             (8...24).contains($0.name.count)
         }) {
-            Logger.consoleUILogger.info("Acceso autorizado para  \(registeredUser.name)")
+             logger.logInfo("Acceso autorizado para  \(registeredUser.name)", for: .user)
             isValid = true
         } else {
-            Logger.consoleUILogger.info("Credenciales incorrectas o usuario no autorizado")
+             logger.logInfo("Credenciales incorrectas o usuario no autorizado", for: .user)
         }
         return isValid
     }
     
     // Solicitar email y contraseña y validar con validateCredentials()
     func logInSolicitude(for userType: UserType) -> Bool{
-        Logger.consoleUILogger.info("Introduzca su email: ")
+         logger.logInfo("Introduzca su email: ", for: .user)
         guard let email = readLine(), !email.isEmpty else {
-            Logger.consoleUILogger.error("El email no puede estar vacio")
+            logger.logError("El email no puede estar vacio", for: .user)
             return false
         }
-        Logger.consoleUILogger.info("Introduzca contraseña: ")
+        logger.logInfo("Introduzca contraseña: ", for: .user)
         guard let password = readLine(), !password.isEmpty else {
-            Logger.consoleUILogger.error("La contraseña esta vacia")
+            logger.logError("La contraseña esta vacia", for: .user)
             return false
         }
         return validateCredentials(email: email, password: password, for: userType)
@@ -96,7 +102,7 @@ struct Program {
         
         var totalPaths: [String] = []
         
-        Logger.consoleDeveloperLogger.info("Calculando la distancia de las rutas")
+        logger.logInfo("Calculando la distancia de las rutas", for: .user)
         
         for route in dataSource.routes {
             var totalDistance = 0.0
@@ -131,27 +137,27 @@ struct Program {
     // Crear usuario en el registro
     func createUser(newUser: User) {
         usersRegistration.append(newUser)
-        Logger.consoleUILogger.info("Usuario \(newUser.name) con email \(newUser.email) añadido satisfactoriamente")
+        logger.logInfo("Usuario \(newUser.name) con email \(newUser.email) añadido satisfactoriamente", for: .user)
     }
     
     
-    //Admin-añadir usuario
+    //Admin-añadir usuario hay que mejorar el filtro para que cumpla requisitos
     func addUser() {
-        Logger.consoleUILogger.info("Introduce el nombre de usuario que quieres añadir")
+         logger.logInfo("Introduce el nombre de usuario que quieres añadir", for: .user)
         guard let nombre = readLine(), !nombre.isEmpty else {
-            Logger.consoleUILogger.error("El nombre no puede estar vacio")
+            logger.logError("El nombre no puede estar vacio", for: .user)
             return
         }
         
-        print("Introduce el email del usuario que quieres añadir")
+        logger.logInfo("Introduce el email del usuario que quieres añadir", for: .user)
         guard let email = readLine(), !email.isEmpty else {
             print("El email no puede estar vacio")
             return
         }
         
-        Logger.consoleUILogger.info("Introduce la contraseña del usuario que quieres añadir")
+         logger.logInfo("Introduce la contraseña del usuario que quieres añadir", for: .user)
         guard let password = readLine(), !password.isEmpty else{
-            Logger.consoleUILogger.error("La contraseña no puede estar vacia")
+            logger.logError("La contraseña no puede estar vacia", for: .user)
             return
         }
         
@@ -161,9 +167,9 @@ struct Program {
     
     // Admin- solicitar usuario para eliminar
     func nameForDeleting() {
-        print("¿Que usuario quieres eliminar?")
+        logger.logInfo("¿Que usuario quieres eliminar?", for: .user)
         guard let name = readLine(), !name.isEmpty else {
-            print("Debes introducir un nombre de usuario")
+            logger.logError("Debes introducir un nombre de usuario", for: .user)
             return
         }
         return deleteUser(userName: name)
@@ -171,12 +177,12 @@ struct Program {
     
     //Admin- eliminar usuario
     func deleteUser(userName: String) {
-        var initialCount = usersRegistration.count
+        let initialCount = usersRegistration.count
         usersRegistration.removeAll(where: {$0.name == userName})
         if initialCount == usersRegistration.count {
-            print("No se encontro un usuario con el nombre \(userName)")
+            logger.logError("No se encontro un usuario con el nombre \(userName)", for: .user)
         } else {
-            print("Usuario \(userName) eliminado correctamente")
+            logger.logInfo("Usuario \(userName) eliminado correctamente", for: .user)
         }
     }
     

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		380E3D8C2D5A2D5700593F2B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 380E3D8B2D5A2D5700593F2B /* OSLog.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		874A17A22D554DD800FA5A98 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -19,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		380E3D8B2D5A2D5700593F2B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		874A17A42D554DD800FA5A98 /* SnowTrails */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SnowTrails; sourceTree = BUILT_PRODUCTS_DIR; };
 		874A17B62D554F6E00FA5A98 /* SnowTrailsTesting.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnowTrailsTesting.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -58,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				380E3D8C2D5A2D5700593F2B /* OSLog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,11 +77,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		380E3D8A2D5A2D5600593F2B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				380E3D8B2D5A2D5700593F2B /* OSLog.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		874A179B2D554DD800FA5A98 = {
 			isa = PBXGroup;
 			children = (
 				874A17A62D554DD800FA5A98 /* SnowTrails */,
 				874A17B72D554F6E00FA5A98 /* SnowTrailsTesting */,
+				380E3D8A2D5A2D5600593F2B /* Frameworks */,
 				874A17A52D554DD800FA5A98 /* Products */,
 			);
 			sourceTree = "<group>";

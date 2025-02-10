@@ -9,10 +9,12 @@ import Foundation
 
 class App {
     
+    let logger = AppLogger(subsystem: "SnowTrails")
+    
     let menuController: MenuController
     
     init() {
-        self.menuController = MenuController()
+        self.menuController = MenuController(logger: logger)
     }
     
     func run() {

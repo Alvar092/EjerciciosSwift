@@ -16,7 +16,7 @@ func main() {
     Logger().error("Mensaje de error")
     Logger().fault("Mensaje de fallo")
     
-    Logger.consoleUILogger.debug("Mensaje al usuario modo debug")
+//    Logger.consoleUILogger.debug("Mensaje al usuario modo debug")
 }
 
 

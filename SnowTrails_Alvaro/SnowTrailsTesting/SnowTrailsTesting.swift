@@ -13,11 +13,20 @@ struct SnowTrailsTesting {
     
     class programmTesting{
         
+        var program: Program
+        var logger: Logging
+        let dataSource = TopographicDataSource.shared
+        
+        init() {
+            logger = AppLogger(subsystem: "SnowTrails")
+            program = Program(logger: logger)
+        }
         
         
         
-        @Test func distanceWithAltitud() async throws {
-            let dataSource = TopographicDataSource.shared
+        
+        @Test func distanceWithAltitud()   {
+//            let dataSource = TopographicDataSource.shared
             
             let pointConnections: [String: [String]] = [
                 "Alpina Grande": ["Pico Nevado", "Valle Blanco", "Cumbre Azul", "Alpina Pequeña"],
@@ -33,7 +42,7 @@ struct SnowTrailsTesting {
                 "Refugio Aislado": [] // No tiene conexiones
             ]
             
-            let program = Program()
+//            let program = Program()
             
             guard let point3 = dataSource.topographicPoints.first(where: {$0.name == "Alpina Grande"}),
                   let point4 = dataSource.topographicPoints.first(where: {$0.name == "Alpina Pequeña"}) else {
@@ -53,9 +62,9 @@ struct SnowTrailsTesting {
             #expect(distance2 == 1.59)
         }
         
-        @Test func distanceWithAltitud_when_only_one_point() async throws {
+        @Test func distanceWithAltitud_when_only_one_point()   {
             let datasource = TopographicDataSource.shared
-            let program = Program()
+//            let program = Program()
             guard let point = datasource.topographicPoints.first(where: {$0.connections.isEmpty}) else{
                 #expect(false, "No hay puntos")
                 return
@@ -66,18 +75,18 @@ struct SnowTrailsTesting {
         }
         
         
-        @Test func showPaths() async throws {
+        @Test func showPaths()   {
             
             let dataSource = TopographicDataSource.shared
             
-            let program = Program()
+//            let program = Program()
             let paths = program.showPaths()
             
             #expect(paths.count == dataSource.routes.count)
         }
         
-        @Test func validateCredentials_forNormalUser() async throws {
-            let program = Program()
+        @Test func validateCredentials_forNormalUser()   {
+//            let program = Program(logger: <#T##any Logging#>)
             let email = normalUserDefault.email
             let password = normalUserDefault.password
             let userType = normalUserDefault.type
@@ -86,8 +95,8 @@ struct SnowTrailsTesting {
             #expect(isNormal == true)
         }
         
-        @Test func validateCredentials_forAdminUser() async throws {
-            let program = Program()
+        @Test func validateCredentials_forAdminUser()   {
+//            let program = Program()
             let email = administratorUserDefault.email
             let password = administratorUserDefault.password
             
@@ -95,15 +104,15 @@ struct SnowTrailsTesting {
             #expect(isAdmin == true)
         }
         
-        @Test func addUser() async throws {
-            let program = Program()
+        @Test func addUser()   {
+//            let program = Program()
             let actualNumber = usersRegistration.count
             program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
             #expect(usersRegistration.count == actualNumber + 1)
         }
         
-        @Test func deleteUser() async throws {
-            let program = Program()
+        @Test func deleteUser() {
+//            let program = Program()
             program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
             print(usersRegistration)
             program.deleteUser(userName: "UsuarioNuevo")
@@ -111,10 +120,10 @@ struct SnowTrailsTesting {
             #expect(usersRegistration.count == 2)
         }
         
-        @Test func showUsers() async throws {
-            let program = Program()
+        @Test func showUsers() {
+//            let program = Program()
             let users = program.showUsers()
-            #expect(users == ["User: : Regularuserkeepcoding1--- Email: regularuser@keepcoding.es", "Admin: : Adminuserkeepcoding1--- Email: adminuser@keepcoding.es"])
+            #expect(users == ["User: Regularuserkeepcoding1--- Email: regularuser@keepcoding.es", "Admin: Adminuserkeepcoding1--- Email: adminuser@keepcoding.es"])
             #expect((users.count == usersRegistration.count))
         }
     }

@@ -27,15 +27,17 @@ struct User {
         self.password = password
     }
     
-    func obtainRol() {
+    func obtainRol() -> String {
+        var rol = ""
         switch type {
         case .normal:
-            Logger.consoleUILogger.info("Usuario \(type.rawValue) con nombre \(name)")
+            rol = "Usuario \(type.rawValue) con nombre \(name)"
         case .admin:
-            Logger.consoleUILogger.info("Usuario\(type.rawValue) con nombre \(name)")
+            rol = "Usuario\(type.rawValue) con nombre \(name)"
         @unknown default:
-            Logger.consoleDeveloperLogger.error("No se encontro el rol de usuario.")
+            rol = "No se encontro el rol de usuario."
         }
+        return rol
     }
 }
 
