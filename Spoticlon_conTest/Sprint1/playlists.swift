@@ -11,6 +11,7 @@ struct Playlist:Equatable{
     var name : String?
     var songs: [Song]
     
+    //Para que no haya repetición de nombres uso un Set, que no permite duplicidades
     static var usedNames: Set<String> = []
     
     init(name: String, songs: [Song]) {
@@ -49,6 +50,7 @@ struct Playlist:Equatable{
     }
     
     //Quitar cancion
+    //Esta funcion no elimina repeticiones
     mutating func removeSong(song:Song) {
         if let indexSong = songs.firstIndex(of: song) {
             songs.remove(at: indexSong)

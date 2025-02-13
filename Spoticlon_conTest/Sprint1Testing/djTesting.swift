@@ -43,7 +43,34 @@ class DjTesting{
     @Test func createByTag() async throws {
         let dj = dj(songs: songs)
         let playlist = dj.createByTag(tag: "80s")
-        #expect(playlist == [Song(id: "1", basicInfo: BasicInfo(title: "Blinding Lights", artist: "The Weeknd", durationMs: 200000, genre: "Pop", album: "After Hours", releaseDate: "2019-11-29", isExplicit: false), technicalInfo: TechnicalInfo(bpm: 171, key: "F#", isrc: "USUM71920298"), metadata: Metadata(tags: ["80s", "synthwave", "dance"], language: "en", popularity: 95))])
+        #expect(
+            playlist == [Song(
+                id: "1",
+                basicInfo: BasicInfo(
+                    title: "Blinding Lights",
+                    artist: "The Weeknd",
+                    durationMs: 200000,
+                    genre: "Pop",
+                    album: "After Hours",
+                    releaseDate: "2019-11-29",
+                    isExplicit: false
+                ),
+                technicalInfo: TechnicalInfo(
+                    bpm: 171,
+                    key: "F#",
+                    isrc: "USUM71920298"
+                ),
+                metadata: Metadata(
+                    tags: [
+                        "80s",
+                        "synthwave",
+                        "dance"
+                    ],
+                    language: "en",
+                    popularity: 95
+                )
+            )]
+        )
     }
     
     @Test func createByStyle() async throws{

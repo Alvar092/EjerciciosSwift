@@ -16,10 +16,7 @@ class MenuController {
         self.logger = logger
         self.program = Program(logger: logger)
     }
-    
-    func readRequest(request: String) {
         
-    }
     
     func showWelcomeMenu() {
         var exit = false
@@ -30,17 +27,14 @@ class MenuController {
             if let choice = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !choice.isEmpty {
                 switch choice {
                 case "1":
-                    if program.logInSolicitude(for: .normal) {
-                        logger.logInfo("Sesión iniciada",for: .user)
-                        showUserMenu()
-                    }
+                    program.logInApplication(for: .normal, success: {showUserMenu()}, failure: {logger.logError("Credenciales incorrectas", for: .user)})
+                    
                 case "2":
-                    if program.logInSolicitude(for: .admin){
-                        logger.logInfo("Sesión iniciada",for: .user)
-                        showAdminMenu()
-                    }
+                    program.logInApplication(for: .admin, success: {showAdminMenu()}, failure: {logger.logError("Credenciales incorrectas", for: .user)})
+                    
                 case "3":
                     exit = true
+                    
                 default:
                     logger.logError("Entrada no válida", for: .developer)
                     logger.logError("Opcion no valida, intente de nuevo", for: .user)
@@ -58,14 +52,16 @@ class MenuController {
             if let choice = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !choice.isEmpty {
                 switch choice {
                 case "1":
-//                    let program = Program()
                     let routes = program.showPaths()
                     for route in routes {print(route)}
+                    
                 case "2":
                     logger.logInfo("Proximamente!",for: .user)
+                    
                 case "3":
                     exitUserMenu = true
                     logger.logInfo("Cerrando sesion...",for: .user)
+                    
                 default:
                     logger.logError("Entrada no válida", for: .developer)
                     logger.logError("Opcion no valida, intente de nuevo", for: .user)
@@ -88,14 +84,18 @@ class MenuController {
                         logger.logInfo("\(user)", for: .user)
                     }
                 case "2":
-                    program.addUser()
+                    program.readNewUserInfo()
+                    
                 case "3":
                     program.nameForDeleting()
+                    
                 case "4":
-                    logger.logInfo("Proximamente!...", for: .user)
+                    program.addPointApplication()
+                    
                 case "5":
                     exitAdminMenu = true
                     logger.logInfo("Cerrando sesión...", for: .user)
+                    
                 default:
                     logger.logError("Entrada no válida", for: .developer)
                     logger.logError("Opción no válida, intentlo de nuevo", for: .user)

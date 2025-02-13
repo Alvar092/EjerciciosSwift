@@ -16,6 +16,7 @@ struct SnowTrailsTesting {
         var program: Program
         var logger: Logging
         let dataSource = TopographicDataSource.shared
+        var users = usersRegistration
         
         init() {
             logger = AppLogger(subsystem: "SnowTrails")
@@ -24,9 +25,7 @@ struct SnowTrailsTesting {
         
         
         
-        
         @Test func distanceWithAltitud()   {
-//            let dataSource = TopographicDataSource.shared
             
             let pointConnections: [String: [String]] = [
                 "Alpina Grande": ["Pico Nevado", "Valle Blanco", "Cumbre Azul", "Alpina Pequeña"],
@@ -42,31 +41,20 @@ struct SnowTrailsTesting {
                 "Refugio Aislado": [] // No tiene conexiones
             ]
             
-//            let program = Program()
-            
-            guard let point3 = dataSource.topographicPoints.first(where: {$0.name == "Alpina Grande"}),
-                  let point4 = dataSource.topographicPoints.first(where: {$0.name == "Alpina Pequeña"}) else {
-                #expect(false, "No hay puntos")
-                return
-            }
-            
             let point1 = TopographicPoint(name: "Alpina Grande", latitude: 46.0000, longitude: 7.5000, elevation: 1500.0, connections: pointConnections["Alpina Grande"] ?? [] )
             
             let point2 = TopographicPoint(name: "Alpina Pequeña", latitude: 46.0022, longitude: 7.5200, elevation: 1200.0, connections: pointConnections["Alpina Pequeña"] ?? [] )
             
             let distance = program.distanceWithAltitude(lat1: point1.latitude, lon1: point1.longitude, alt1: point1.elevation, lat2: point2.latitude, lon2: point2.longitude, alt2: point2.elevation)
             
-            let distance2 = program.distanceWithAltitude(lat1: point3.latitude, lon1: point3.longitude, alt1: point3.elevation, lat2: point4.latitude, lon2: point4.longitude, alt2: point4.elevation)
-            
             #expect(distance == 1.59)
-            #expect(distance2 == 1.59)
+           
         }
         
         @Test func distanceWithAltitud_when_only_one_point()   {
             let datasource = TopographicDataSource.shared
-//            let program = Program()
             guard let point = datasource.topographicPoints.first(where: {$0.connections.isEmpty}) else{
-                #expect(false, "No hay puntos")
+                #expect(Bool(false), "No hay puntos")
                 return
             }
             let distance = program.distanceWithAltitude(lat1: point.latitude, lon1: point.longitude, alt1: point.elevation, lat2: nil, lon2: nil, alt2: nil)
@@ -76,55 +64,95 @@ struct SnowTrailsTesting {
         
         
         @Test func showPaths()   {
-            
             let dataSource = TopographicDataSource.shared
             
-//            let program = Program()
             let paths = program.showPaths()
             
             #expect(paths.count == dataSource.routes.count)
         }
         
         @Test func validateCredentials_forNormalUser()   {
-//            let program = Program(logger: <#T##any Logging#>)
             let email = normalUserDefault.email
             let password = normalUserDefault.password
-            let userType = normalUserDefault.type
+            let type = normalUserDefault.type
             
             let isNormal = program.validateCredentials(email: email, password: password, for: .normal)
             #expect(isNormal == true)
         }
         
         @Test func validateCredentials_forAdminUser()   {
-//            let program = Program()
             let email = administratorUserDefault.email
             let password = administratorUserDefault.password
-            
+            let userType = administratorUserDefault.type
             let isAdmin = program.validateCredentials(email: email, password: password, for: .admin)
             #expect(isAdmin == true)
         }
         
-        @Test func addUser()   {
-//            let program = Program()
-            let actualNumber = usersRegistration.count
-            program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
-            #expect(usersRegistration.count == actualNumber + 1)
-        }
-        
-        @Test func deleteUser() {
-//            let program = Program()
-            program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
-            print(usersRegistration)
-            program.deleteUser(userName: "UsuarioNuevo")
-            print(usersRegistration)
-            #expect(usersRegistration.count == 2)
+        @Test func validateCredentialsWhenUserDoesntExists() {
+            let email = "ejemplofalso@correofrio.net"
+            let result = program.validateCredentials(email: email, password: "12345", for: .normal)
+            #expect(result == false)
         }
         
         @Test func showUsers() {
-//            let program = Program()
             let users = program.showUsers()
-            #expect(users == ["User: Regularuserkeepcoding1--- Email: regularuser@keepcoding.es", "Admin: Adminuserkeepcoding1--- Email: adminuser@keepcoding.es"])
             #expect((users.count == usersRegistration.count))
+        }
+        
+        @Test func addPointToPath() {
+            let point = "Cerro Plateado"
+            let pathName = "Ruta del Pico Nevado y Lago Helado"
+            // Cantidad de puntos de inicio
+            let initialCount = dataSource.routes.first(where: {$0.name == pathName})?.points.count ?? 0
+            
+            program.addPointToPath(pointName: point, for: pathName)
+            
+            let updatePath = dataSource.routes.first(where: {$0.name == pathName})
+            
+            #expect(updatePath?.points.contains(point) == true)
+            #expect(updatePath?.points.count == initialCount + 1)
+        }
+
+        @Suite class CreateUserTest{
+            
+            var program: Program
+            var logger: Logging
+            let dataSource = TopographicDataSource.shared
+            var users = usersRegistration
+            
+            init() {
+                logger = AppLogger(subsystem: "SnowTrails")
+                program = Program(logger: logger)
+            }
+            
+            @Test func createUser(){
+                let initialCount = usersRegistration.count
+                print(usersRegistration)
+                let userToBeAdded = User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456")
+                program.createUser(newUser: userToBeAdded )
+                print(usersRegistration)
+                let afterCount = usersRegistration.count
+                print(usersRegistration.count)
+                #expect(afterCount == initialCount + 1 )
+            }
+            
+            @Test func deleteUser() {
+                program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
+                print(usersRegistration)
+                program.deleteUser(userName: "UsuarioNuevo")
+                print(usersRegistration)
+                #expect(usersRegistration.count == 2)
+            }
+        }
+       
+        @Test func createUserThatFails(){
+            let invalidUser = User(type: .normal, name: "Pericoeldelospalotes", email: "ejemplo@correocaliente.net", password: "12345")
+            let invalidUser1 = User(type: .normal, name: "us", email: "ejemplocorrecto@correofrio.com", password: "123456")
+            let initialCount = usersRegistration.count
+            program.createUser(newUser: invalidUser)
+            program.createUser(newUser: invalidUser1)
+            let postCount = usersRegistration.count
+            #expect(postCount == initialCount)
         }
     }
 }

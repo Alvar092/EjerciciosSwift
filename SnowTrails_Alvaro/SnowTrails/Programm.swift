@@ -7,7 +7,7 @@
 
 import Foundation
 import OSLog
- 
+
 
 struct Program {
     private let logger: Logging
@@ -21,49 +21,62 @@ struct Program {
     private let dataSource = TopographicDataSource.shared
     
     
-    // Validar credenciales
-    func validateCredentials(email: String, password: String, for usertype: UserType) -> Bool {
-        var isValid = false
-        
-        let emailRegex = "^[A-Za-z0-9]+@[A-Za-z0-9]+\\.(es|com)$"
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        
-        guard emailPredicate.evaluate(with: email) else {
-            logger.logError("El email no cumple el formato adecuado", for: .developer)
-            logger.logError("Email no valido, por favor introduce un email", for: .user)
-            return isValid
-        }
-        
-        if let registeredUser = usersRegistration.first(where: {
-            $0.type == usertype &&
-            $0.email == email &&
-            $0.password == password &&
-            (8...24).contains($0.name.count)
-        }) {
-             logger.logInfo("Acceso autorizado para  \(registeredUser.name)", for: .user)
-            isValid = true
-        } else {
-             logger.logInfo("Credenciales incorrectas o usuario no autorizado", for: .user)
-        }
-        return isValid
-    }
-    
     // Solicitar email y contraseña y validar con validateCredentials()
-    func logInSolicitude(for userType: UserType) -> Bool{
+    func logInApplication(for userType: UserType, success: () -> (), failure: ()-> ()) {
          logger.logInfo("Introduzca su email: ", for: .user)
         guard let email = readLine(), !email.isEmpty else {
             logger.logError("El email no puede estar vacio", for: .user)
-            return false
+            return
         }
         logger.logInfo("Introduzca contraseña: ", for: .user)
         guard let password = readLine(), !password.isEmpty else {
             logger.logError("La contraseña esta vacia", for: .user)
-            return false
+            return
         }
-        return validateCredentials(email: email, password: password, for: userType)
-        
+        if validateCredentials(email: email, password: password, for: userType){
+            success()
+        } else {
+            failure()
+        }
     }
         
+    // Validar email
+    func isValidEmail(_ email: String) -> Bool {
+        let parts = email.split(separator: "@")
+        guard parts.count == 2, parts[1].contains(".") else {
+            return false
+        }
+        let validDomains = ["es", "com"]
+        if let domainsSuffix = parts[1].split(separator: ".").last {
+            return validDomains.contains(String(domainsSuffix))
+        }
+        return false
+    }
+    
+    // Validar credenciales
+    func validateCredentials(email: String, password: String, for usertype: UserType) -> Bool {
+        var isValid = false
+        
+        if let findUser = usersRegistration.first(where: {$0.email == email}) {
+            let name = findUser.name
+            
+            guard (8...24).contains(name.count) else{
+                logger.logError("El nombre de usuario debe contener entre 8 y 24 caracteres", for: .user)
+                return isValid
+            }
+            guard isValidEmail(email) else {
+                logger.logError("El email no es valido, por favor introduce un email acabado en .es o .com", for: .user)
+                return isValid
+            }
+            isValid = true
+            logger.logInfo("Acceso autorizado para \(name) como usuario \(usertype.rawValue)", for: .user)
+        }
+        else {
+            logger.logError("No se encontró el usuario", for: .user)
+        }
+        return isValid
+    }
+    
     
     //Formula Haversine
     func haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double) -> Double {
@@ -96,7 +109,7 @@ struct Program {
     }
     
     
-    //User-Funcion de mostrar rutas (las muestra en consola y te lleva al menu de usuario normal)
+    //User-Funcion de mostrar rutas
     func showPaths() -> [String] {
         let dataSource = TopographicDataSource.shared
         
@@ -125,24 +138,22 @@ struct Program {
     
     //User-Funcion de obtener ruta mas corta (en construcción mientras no saque lo básico)
     
+    
+    
+    
+    
     //Admin-mostrar usuarios
     func showUsers() -> [String] {
         var result:[String] = []
         for user in usersRegistration {
             result.append("\(user.type.rawValue): \(user.name)--- Email: \(user.email)")
         }
-        return result 
-    }
-    
-    // Crear usuario en el registro
-    func createUser(newUser: User) {
-        usersRegistration.append(newUser)
-        logger.logInfo("Usuario \(newUser.name) con email \(newUser.email) añadido satisfactoriamente", for: .user)
+        return result
     }
     
     
-    //Admin-añadir usuario hay que mejorar el filtro para que cumpla requisitos
-    func addUser() {
+    //Admin-añadir usuario (validamos en createUser)
+    func readNewUserInfo() {
          logger.logInfo("Introduce el nombre de usuario que quieres añadir", for: .user)
         guard let nombre = readLine(), !nombre.isEmpty else {
             logger.logError("El nombre no puede estar vacio", for: .user)
@@ -163,6 +174,38 @@ struct Program {
         
         let newUser = User(type: .normal, name: nombre, email: email, password: password)
         return createUser(newUser: newUser)
+    }
+
+    
+    // Validaciones de nombre, email y credenciales. Añade usuario al registro.
+    func createUser(newUser: User) {
+        
+        guard !usersRegistration.contains(where: {$0.name == newUser.name}) else{
+            logger.logError("El nombre de usuario ya esta registrado", for: .user)
+            return
+        }
+        
+        guard (8...24).contains(newUser.name.count) else{
+            logger.logError("El nombre de usuario debe contener entre 8 y 24 caracteres", for: .user)
+            return
+        }
+        
+        guard newUser.type == .normal else {
+            logger.logError("El usuario no cuenta con la categoría adecuada", for: .user)
+            return
+        }
+                
+        guard isValidEmail(newUser.email) else {
+            logger.logError("El email no es valido, por favor introduce un email acabado en .es o .com", for: .user)
+            return
+        }
+        
+        // Usuario valido !
+        usersRegistration.append(newUser)
+        print(usersRegistration)
+        logger.logInfo("Usuario \(newUser.name) con email \(newUser.email) añadido satisfactoriamente", for: .user)
+        
+        
     }
     
     // Admin- solicitar usuario para eliminar
@@ -186,9 +229,51 @@ struct Program {
         }
     }
     
-    //Admin- añadir punto a una ruta(en construcción mientras no saque lo básico)
+    func addPointApplication() {
+        logger.logInfo("¿Que punto desea añadir?", for: .user)
+        guard let point = readLine(), !point.isEmpty else{
+            logger.logError("El nombre del punto no puede estar vacio", for: .user)
+            return
+        }
+        
+        logger.logInfo("Introduce el nombre de la ruta a la que quieres añadir el punto", for: .user)
+        guard let path = readLine(), !path.isEmpty else{
+            logger.logError("El nombre de la ruta no puede estar vacio", for: .user)
+            return
+        }
+        
+        logger.logInfo("Si quieres añadirlo en una posición especifica, introduce su valor numérico. Si no, se añadirá al final por defecto", for: .user)
+        let inputPosition = readLine()
+        
+        let position : Int? = inputPosition?.isEmpty == false ? Int(inputPosition!) : nil
+        
+        addPointToPath(pointName: point, for: path, in: position)
+    }
     
-    //Admin- loggout
+    
+    //Admin- añadir punto a una ruta(en construcción mientras no saque lo básico)
+    func addPointToPath(pointName: String, for route: String, in position: Int? = nil) {
+        
+        // Verificar que la ruta existe y localizar su indice
+        guard let index = dataSource.routes.firstIndex(where: {$0.name == route}) else {
+            logger.logError("No se ha encontrado la ruta", for: .user)
+            return
+        }
+        
+        // Verificar que el punto no esta en la ruta ya
+        if dataSource.routes[index].points.contains(pointName) {
+            logger.logError("El punto ya esta añadido a la ruta", for: .user)
+            return
+        }
+        
+        // Insertar el punto en la posición especificada o al final.
+        if let pos = position, pos >= 0, pos <= dataSource.routes[index].points.count {
+            dataSource.routes[index].points.insert(pointName, at: pos)
+        } else {
+            dataSource.routes[index].points.append(pointName)
+        }
+        logger.logInfo("El punto \(pointName) se ha añadido a la ruta \(route) correctamente", for: .user)
+    }
     
 }
 

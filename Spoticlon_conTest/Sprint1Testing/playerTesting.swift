@@ -26,6 +26,7 @@ class PlayerTesting {
     deinit{
         testData = nil
         songs = []
+        Playlist.usedNames = []
     }
     
    @Test func testInitPlayer_whenPlaylistEmptyAndNameUnique() async throws {

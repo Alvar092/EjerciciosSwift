@@ -8,19 +8,19 @@
 import Foundation
 import OSLog
 
-enum PlayingMode {
-    case startToFinish
-    case shuffle
-    case endToStart
-    case antiquity
-    case tonality
+enum PlayingMode: String {
+    case startToFinish = "Start to Finish"
+    case shuffle = "Shuffle"
+    case endToStart = "End to Start"
+    case antiquity = "By Antiquity"
+    case tonality = "By Tonality"
     case popularity(order: PopularityOrder)
-    case bPM
+    case bPM = "By BPM"
 }
 
-enum PopularityOrder {
-    case ascending
-    case descending
+enum PopularityOrder: String  {
+    case ascending = "Popularity (ascending)"
+    case descending = "Popularity (descending)"
 }
 
 

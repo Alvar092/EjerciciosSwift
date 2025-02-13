@@ -9,10 +9,9 @@ import Foundation
 import OSLog
 
 enum UserType: String {
-    case normal = "User"
-    case admin = "Admin"
+    case normal = "normal"
+    case admin = "administrador"
 }
-
 
 struct User {
     let type: UserType
