@@ -56,7 +56,7 @@ class MenuController {
                     for route in routes {print(route)}
                     
                 case "2":
-                    logger.logInfo("Proximamente!",for: .user)
+                    program.shortestWayApplication()
                     
                 case "3":
                     exitUserMenu = true

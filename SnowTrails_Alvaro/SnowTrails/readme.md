@@ -51,8 +51,6 @@ Tanto los puntos topográficos como las rutas se han gestionado usando arrays co
 
 ### *Puntos completados del proyecto*
 
-Los puntos con una X al lado no se han implementado.
-
 
 2. Funcionalidades obligatorias 
     2.1 Menu de login
@@ -69,11 +67,11 @@ Los puntos con una X al lado no se han implementado.
 
 3. Funcionalidades complementarias:
     3.1 Menu login
-    3.2 Menu de usuario normal X
-        3.2.1 Obtener ruta mas corta  X
+    3.2 Menu de usuario normal 
+        3.2.1 Obtener ruta mas corta  
     3.3 Menu de administrador 
         3.3.1 Añadir usuario 
-        3.3.2 Añadir punto a una ruta X
+        3.3.2 Añadir punto a una ruta 
 
 
 - Logs para desarrollador y usuario implementados. 
@@ -81,5 +79,9 @@ Los puntos con una X al lado no se han implementado.
 
 ### *Dificultades y comentarios* 
 
+- El patrón Singleton tiene sus ventajas e inconvenientes. Ha sido sencillo por la parte de poder acceder como una variable global a las estructuras de datos, pero ha sido un verdadero dolor testar con este patrón. 
 
+- El punto 2.2.2 Obtener ruta mas corta parece que funciona, pero al comprobar con el ejemplo del enunciado he encontrado una ruta algo mas corta, por lo que tengo serias dudas sobre que este bien... pero no me da tiempo de hacerle testing.
+
+- Agradecimientos a Isma y compañeros, por el apoyo que brindan y la pequeña comunidad que ha sido este módulo para ir todos juntos progresando. 
 

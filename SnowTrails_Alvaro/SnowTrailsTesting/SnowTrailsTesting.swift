@@ -48,7 +48,7 @@ struct SnowTrailsTesting {
             let distance = program.distanceWithAltitude(lat1: point1.latitude, lon1: point1.longitude, alt1: point1.elevation, lat2: point2.latitude, lon2: point2.longitude, alt2: point2.elevation)
             
             #expect(distance == 1.59)
-           
+            
         }
         
         @Test func distanceWithAltitud_when_only_one_point()   {
@@ -74,7 +74,7 @@ struct SnowTrailsTesting {
         @Test func validateCredentials_forNormalUser()   {
             let email = normalUserDefault.email
             let password = normalUserDefault.password
-            let type = normalUserDefault.type
+            //            let type = normalUserDefault.type
             
             let isNormal = program.validateCredentials(email: email, password: password, for: .normal)
             #expect(isNormal == true)
@@ -83,7 +83,7 @@ struct SnowTrailsTesting {
         @Test func validateCredentials_forAdminUser()   {
             let email = administratorUserDefault.email
             let password = administratorUserDefault.password
-            let userType = administratorUserDefault.type
+            //            let userType = administratorUserDefault.type
             let isAdmin = program.validateCredentials(email: email, password: password, for: .admin)
             #expect(isAdmin == true)
         }
@@ -112,39 +112,7 @@ struct SnowTrailsTesting {
             #expect(updatePath?.points.contains(point) == true)
             #expect(updatePath?.points.count == initialCount + 1)
         }
-
-        @Suite class CreateUserTest{
-            
-            var program: Program
-            var logger: Logging
-            let dataSource = TopographicDataSource.shared
-            var users = usersRegistration
-            
-            init() {
-                logger = AppLogger(subsystem: "SnowTrails")
-                program = Program(logger: logger)
-            }
-            
-            @Test func createUser(){
-                let initialCount = usersRegistration.count
-                print(usersRegistration)
-                let userToBeAdded = User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456")
-                program.createUser(newUser: userToBeAdded )
-                print(usersRegistration)
-                let afterCount = usersRegistration.count
-                print(usersRegistration.count)
-                #expect(afterCount == initialCount + 1 )
-            }
-            
-            @Test func deleteUser() {
-                program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
-                print(usersRegistration)
-                program.deleteUser(userName: "UsuarioNuevo")
-                print(usersRegistration)
-                #expect(usersRegistration.count == 2)
-            }
-        }
-       
+        
         @Test func createUserThatFails(){
             let invalidUser = User(type: .normal, name: "Pericoeldelospalotes", email: "ejemplo@correocaliente.net", password: "12345")
             let invalidUser1 = User(type: .normal, name: "us", email: "ejemplocorrecto@correofrio.com", password: "123456")
@@ -152,7 +120,42 @@ struct SnowTrailsTesting {
             program.createUser(newUser: invalidUser)
             program.createUser(newUser: invalidUser1)
             let postCount = usersRegistration.count
-            #expect(postCount == initialCount)
+            #expect(!usersRegistration.contains(invalidUser))
+            #expect(!usersRegistration.contains(invalidUser1))
+        }
+        
+        
+        @Test func createUser(){
+            let initialCount = usersRegistration.count
+            print(usersRegistration)
+            let userToBeAdded = User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456")
+            program.createUser(newUser: userToBeAdded )
+            print(usersRegistration)
+            let afterCount = usersRegistration.count
+            print(usersRegistration.count)
+            #expect(afterCount == initialCount + 1 )
+        }
+        
+        @Test func deleteUser() {
+            program.createUser(newUser: User(type:.normal, name: "UsuarioNuevo", email: "usuarionuevo@keepcoding.es",password: "123456"))
+            print(usersRegistration)
+            program.deleteUser(userName: "UsuarioNuevo")
+            print(usersRegistration)
+            #expect(usersRegistration.count == 2)
         }
     }
 }
+
+
+//        @Suite class CreateUserTest{
+//            
+//            var program: Program
+//            var logger: Logging
+//            let dataSource = TopographicDataSource.shared
+//            var users = usersRegistration
+//            
+//            init() {
+//                logger = AppLogger(subsystem: "SnowTrails")
+//                program = Program(logger: logger)
+//            }
+            

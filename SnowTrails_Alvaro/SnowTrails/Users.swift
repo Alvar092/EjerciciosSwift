@@ -13,7 +13,7 @@ enum UserType: String {
     case admin = "administrador"
 }
 
-struct User {
+struct User: Equatable {
     let type: UserType
     let name: String
     let email: String
@@ -40,11 +40,12 @@ struct User {
     }
 }
 
-
+// Usuarios de muestra
 let normalUserDefault = User(type: .normal, name: "Regularuserkeepcoding1", email: "regularuser@keepcoding.es", password: "Regularuser1")
                                             
 let administratorUserDefault = User(type: .admin, name: "Adminuserkeepcoding1", email: "adminuser@keepcoding.es", password: "Adminuser1")
-                                            
+    
+// Array de usuarios para guardar los futuros registros
 var usersRegistration: [User] = [normalUserDefault, administratorUserDefault]
 
 

@@ -16,10 +16,12 @@ class TopographicDataSource{
     private init() {
         self.topographicPoints = initTopographicPoints()
         self.routes = initRoutes()
+        self.pointConnections = initPointConnections()
     }
     
     var topographicPoints : [TopographicPoint]
     var routes: [Path]
+    var pointConnections: [String: [String]]
 }
 
 
@@ -29,6 +31,23 @@ struct TopographicPoint{
     let longitude: Double
     let elevation: Double
     var connections: [String]
+}
+
+func initPointConnections() -> [String: [String]] {
+    let pointConnections: [String: [String]] = [
+        "Alpina Grande": ["Pico Nevado", "Valle Blanco", "Cumbre Azul", "Alpina Pequeña"],
+        "Alpina Pequeña": ["Alpina Grande"],
+        "Pico Nevado": ["Alpina Grande", "Lago Helado", "Cerro Plateado"],
+        "Valle Blanco": ["Alpina Grande", "Refugio Alpino"],
+        "Cumbre Azul": ["Alpina Grande", "Cerro Plateado"],
+        "Lago Helado": ["Pico Nevado", "Bosque Nevado"],
+        "Bosque Nevado": ["Lago Helado", "Cascada Blanca", "Cerro Plateado"],
+        "Cerro Plateado": ["Pico Nevado", "Cumbre Azul", "Bosque Nevado", "Cascada Blanca"],
+        "Cascada Blanca": ["Cerro Plateado", "Bosque Nevado"],
+        "Refugio Alpino": ["Valle Blanco"],
+        "Refugio Aislado": [] // No tiene conexiones
+    ]
+    return pointConnections
 }
 
 
